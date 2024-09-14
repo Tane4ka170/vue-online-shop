@@ -2,14 +2,25 @@
 import { onMounted } from 'vue'
 import { useProductsStore } from '@/stores/products'
 
-const productStore = useProductsStore()
+const store = useProductsStore()
 
 onMounted(() => {
   console.log('first')
-  productStore.fetchProductsFromDB()
+  store.fetchProductsFromDB()
 })
 </script>
 
 <template>
-  <h1>Catalog</h1>
+  <div class="product-list">
+    <div class="product" v-for="product in store.products" :key="product.id">
+      <img :src="product.thumbnail" alt="">
+      <h2>Brand: {{ product.brand }}</h2>
+      <p>Description: {{  product.description }}</p>
+      <p>Price: ${{  product.price}}</p>
+    </div>
+  </div>
 </template>
+
+<style scoped>
+.product-list{}
+</style>
