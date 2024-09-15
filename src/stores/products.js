@@ -2,18 +2,26 @@ import { defineStore } from 'pinia'
 
 export const useProductsStore = defineStore('products', {
   state: () => ({
-    products: []
+    products: [],
+    cart: []
   }),
 
   actions: {
-    async fetchProductsFromDB() {
-      try {
-        const res = await fetch('https://dummyjson.com/products')
-        const json = await res.json()
-        this.products = json.products
-      } catch (error) {
-        console.error('Error fetching products:', error)
-      }
+    fetchProductsFromDB() {
+      fetch('https://dummyjson.com/products')
+        .then((res) => res.json())
+        .then((json) => {
+          this.products = json.products
+        })
+    },
+
+    addToCart(product) {
+      this.cart.push(product)
+    },
+
+    removeFromCart(id) {
+      console.log('>>>>> ID', id)
+      this.cart = this.cart.filter((item) => item.id !== id)
     }
   }
 })
