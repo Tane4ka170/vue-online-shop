@@ -1,10 +1,15 @@
 <script setup>
 import { computed } from 'vue'
 import { useProductsStore } from '@/stores/products'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const store = useProductsStore()
 const route = useRoute()
+const router = useRouter()
+
+const addToCart = () => {
+  router.push({ name: 'CartView' })
+}
 
 const selectedProduct = computed(() => {
   return store.products.find((item) => item.id === Number(route.params.id))
@@ -12,6 +17,7 @@ const selectedProduct = computed(() => {
 </script>
 
 <template>
+  <button @click="router.push({ name: 'Catalog' })">Back to catalog</button>
   <div class="product" v-if="selectedProduct">
     <div class="product-image">
       <img :src="selectedProduct.thumbnail" alt="Product Image" />
@@ -20,9 +26,9 @@ const selectedProduct = computed(() => {
       <p>Brand: {{ selectedProduct.brand }}</p>
       <p>Description: {{ selectedProduct.description }}</p>
       <h2>Price: ${{ selectedProduct.price }}</h2>
+      <button @click="addToCart">Add to cart</button>
     </div>
   </div>
-  <p v-else>Product not found.</p>
 </template>
 
 <style scoped>
