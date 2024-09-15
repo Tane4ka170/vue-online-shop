@@ -7,13 +7,16 @@ const store = useProductsStore()
 const route = useRoute()
 const router = useRouter()
 
-const addToCart = () => {
-  router.push({ name: 'CartView' })
-}
-
 const selectedProduct = computed(() => {
   return store.products.find((item) => item.id === Number(route.params.id))
 })
+
+const addToCart = () => {
+  if (selectedProduct.value) {
+    store.addToCart(selectedProduct.value)
+    router.push({ name: 'CartView' })
+  }
+}
 </script>
 
 <template>
@@ -29,6 +32,7 @@ const selectedProduct = computed(() => {
       <button @click="addToCart">Add to cart</button>
     </div>
   </div>
+  <p v-else>Product not found.</p>
 </template>
 
 <style scoped>
